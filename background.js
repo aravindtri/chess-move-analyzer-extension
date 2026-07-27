@@ -15,9 +15,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 async function handleAnalyze(data) {
-  return await analyzeMoves(data.movesText, data.skillLevel, data.imageBase64);
+  try {
+    return await analyzeMoves(data.movesText, data.skillLevel, data.imageBase64);
+  } catch (e) {
+    return { error: e.message };
+  }
 }
 
 async function handleChat(data) {
-  return await chatAboutMoves(data.movesText, data.analysis, data.question, data.history);
+  try {
+    return await chatAboutMoves(data.movesText, data.analysis, data.question, data.history);
+  } catch (e) {
+    return { error: e.message };
+  }
 }
