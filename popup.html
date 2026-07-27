@@ -10,7 +10,7 @@
     <!-- Header -->
     <div class="header">
       <h1>♟ Chess Move Analyzer</h1>
-      <button id="settingsBtn" class="icon-btn" title="Settings">⚙</button>
+      <button id="settingsBtn" class="icon-btn" title="API Settings">⚙ API Keys</button>
     </div>
 
     <!-- Settings Panel -->
@@ -44,6 +44,9 @@
 
     <!-- Input Panel -->
     <div id="inputPanel" class="panel">
+      <div id="noApiWarning" class="warning hidden">
+        ⚠ No API key set — <a href="#" id="openSettingsLink">click here to configure</a>
+      </div>
       <div class="form-group">
         <label>Paste moves or upload score sheet</label>
         <textarea id="movesInput" rows="4" placeholder="1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5..."></textarea>

@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('analyzeBtn').addEventListener('click', analyzeMoves);
   document.getElementById('chatSend').addEventListener('click', sendChat);
   document.getElementById('chatInput').addEventListener('keydown', e => { if (e.key === 'Enter') sendChat(); });
+  document.getElementById('openSettingsLink').addEventListener('click', e => { e.preventDefault(); showSettings(); });
   document.getElementById('btnFirst').addEventListener('click', () => setPly(0));
   document.getElementById('btnPrev').addEventListener('click', () => setPly(currentPly - 1));
   document.getElementById('btnNext').addEventListener('click', () => setPly(currentPly + 1));
