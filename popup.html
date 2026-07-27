@@ -46,6 +46,19 @@
         <label>Text Model (moves + chat)</label>
         <input type="text" id="textModel" placeholder="deepseek-chat">
       </div>
+      <div class="form-group">
+        <label>Vision Provider (optional)</label>
+        <select id="visionProvider">
+          <option value="">Same as main</option>
+          <option value="gemini">Gemini</option>
+          <option value="openai_compatible">OpenAI Compatible</option>
+          <option value="azure_openai">Azure OpenAI</option>
+        </select>
+      </div>
+      <div class="form-group" id="visionApiKeyGroup" style="display:none">
+        <label>Vision API Key</label>
+        <input type="password" id="visionApiKey" placeholder="Leave empty for main key">
+      </div>
       <div class="form-group azure-field hidden">
         <label>API Version</label>
         <input type="text" id="apiVersion" placeholder="2024-02-15-preview">

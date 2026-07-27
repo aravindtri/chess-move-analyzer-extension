@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
   document.getElementById('saveSettings').addEventListener('click', saveSettings);
   document.getElementById('provider').addEventListener('change', toggleProviderFields);
+  document.getElementById('visionProvider').addEventListener('change', toggleVisionFields);
   document.getElementById('uploadBtn').addEventListener('click', () => document.getElementById('imageUpload').click());
   document.getElementById('imageUpload').addEventListener('change', handleImageUpload);
   document.getElementById('analyzeBtn').addEventListener('click', analyzeMoves);
@@ -66,6 +67,9 @@ async function loadSettings() {
   document.getElementById('visionModel').value = config.visionModel || '';
   document.getElementById('textModel').value = config.textModel || '';
   document.getElementById('apiVersion').value = config.apiVersion || '';
+  document.getElementById('visionProvider').value = config.visionProvider || '';
+  document.getElementById('visionApiKey').value = config.visionApiKey || '';
+  toggleVisionFields();
   toggleProviderFields();
   checkApiWarning();
 }
@@ -82,6 +86,11 @@ function toggleProviderFields() {
   const showAzure = provider === 'azure_openai';
   document.querySelector('.openai-field').classList.toggle('hidden', !showOpenAi);
   document.querySelector('.azure-field').classList.toggle('hidden', !showAzure);
+}
+
+function toggleVisionFields() {
+  const visProv = document.getElementById('visionProvider').value;
+  document.getElementById('visionApiKeyGroup').style.display = visProv ? 'block' : 'none';
 }
 
 function toggleSettings() {
@@ -101,7 +110,9 @@ async function saveSettings() {
       model: document.getElementById('model').value,
       visionModel: document.getElementById('visionModel').value,
       textModel: document.getElementById('textModel').value,
-      apiVersion: document.getElementById('apiVersion').value
+      apiVersion: document.getElementById('apiVersion').value,
+      visionProvider: document.getElementById('visionProvider').value,
+      visionApiKey: document.getElementById('visionApiKey').value
     });
     document.getElementById('settingsPanel').classList.add('hidden');
     checkApiWarning();
