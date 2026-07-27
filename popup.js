@@ -26,6 +26,20 @@ const INITIAL_BOARD = [
 document.addEventListener('DOMContentLoaded', async () => {
   loadSettings();
   document.getElementById('settingsBtn').addEventListener('click', toggleSettings);
+  document.getElementById('fullscreenBtn').addEventListener('click', () => {
+    chrome.storage.local.get(['lastAnalysis', 'lastChatHistory', 'lastPlies', 'lastPly'], (data) => {
+      chrome.storage.local.set({
+        fullscreenData: {
+          analysis: data.lastAnalysis,
+          chatHistory: data.lastChatHistory,
+          plies: data.lastPlies,
+          ply: data.lastPly
+        }
+      }, () => {
+        chrome.tabs.create({ url: chrome.runtime.getURL('fullscreen.html') });
+      });
+    });
+  });
   document.getElementById('saveSettings').addEventListener('click', saveSettings);
   document.getElementById('provider').addEventListener('change', toggleProviderFields);
   document.getElementById('uploadBtn').addEventListener('click', () => document.getElementById('imageUpload').click());
@@ -131,6 +145,14 @@ async function analyzeMoves() {
     document.getElementById('uploadBtn').textContent = '📷 Upload Photo';
     document.getElementById('imageUpload').value = '';
 
+    // Save state for fullscreen mode
+    chrome.storage.local.set({
+      lastAnalysis: result,
+      lastChatHistory: [],
+      lastPlies: plies,
+      lastPly: currentPly
+    });
+
     showResults(result);
     status.classList.add('hidden');
   } catch (e) {
@@ -212,7 +234,7 @@ function renderBoard() {
       const piece = grid[row][col];
       if (piece) {
         const span = document.createElement('span');
-        span.className = 'piece';
+        span.className = 'piece ' + (piece.startsWith('W_') ? 'w' : 'b');
         span.textContent = PIECES[piece] || '';
         sq.appendChild(span);
       }

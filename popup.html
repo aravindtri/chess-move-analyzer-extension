@@ -4,13 +4,20 @@
   <meta charset="UTF-8">
   <title>Chess Move Analyzer</title>
   <link rel="stylesheet" href="popup.css">
+  <style>
+    body.fullscreen { width: 100%; max-width: 800px; margin: 0 auto; padding: 20px; }
+    .fullscreen .board { max-width: 500px; }
+  </style>
 </head>
 <body>
   <div id="app">
     <!-- Header -->
     <div class="header">
       <h1>♟ Chess Move Analyzer</h1>
-      <button id="settingsBtn" class="icon-btn" title="API Settings">⚙ API Keys</button>
+      <div class="header-btns">
+        <button id="fullscreenBtn" class="icon-btn" title="Open Fullscreen">⛶ Full</button>
+        <button id="settingsBtn" class="icon-btn" title="API Settings">⚙ Keys</button>
+      </div>
     </div>
 
     <!-- Settings Panel -->

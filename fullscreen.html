@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Chess Move Analyzer</title>
+  <link rel="stylesheet" href="popup.css">
+  <style>
+    body { width: 100%; max-width: 900px; margin: 0 auto; padding: 24px; min-height: 100vh; }
+    .board { max-width: 520px; margin: 0 auto; }
+    .board .square { font-size: 42px; }
+    .chat-messages { max-height: 400px; }
+    .header { position: sticky; top: 0; background: #1a1a2e; z-index: 10; padding: 12px 0; margin-bottom: 16px; }
+    .header-btns { display: flex; gap: 8px; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="header">
+      <h1>♟ Chess Move Analyzer</h1>
+      <div class="header-btns">
+        <button id="settingsBtn" class="icon-btn">⚙ Keys</button>
+      </div>
+    </div>
+
+    <div id="settingsPanel" class="panel hidden">
+      <div class="form-group"><label>API Key</label><input type="password" id="apiKey"></div>
+      <div class="form-group"><label>Provider</label><select id="provider"><option value="gemini">Gemini</option><option value="openai_compatible">OpenAI Compatible</option><option value="azure_openai">Azure OpenAI</option></select></div>
+      <div class="form-group openai-field hidden"><label>Base URL</label><input type="text" id="baseUrl"></div>
+      <div class="form-group"><label>Model</label><input type="text" id="model"></div>
+      <div class="form-group azure-field hidden"><label>API Version</label><input type="text" id="apiVersion"></div>
+      <button id="saveSettings" class="btn primary">Save</button>
+    </div>
+
+    <div id="loadingMsg" class="status">Loading analysis...</div>
+
+    <div id="resultsPanel" class="panel hidden">
+      <div class="result-header"><span id="openingName" class="opening"></span><span id="evaluation" class="eval"></span></div>
+      <div id="chessboard" class="board"></div>
+      <div class="board-controls">
+        <button id="btnFirst">⏮</button><button id="btnPrev">◀</button>
+        <span id="moveLabel" class="move-label">Start</span>
+        <button id="btnNext">▶</button><button id="btnLast">⏭</button>
+        <button id="btnFlip" class="btn-sm">Flip</button>
+      </div>
+      <div id="movesChips" class="moves-chips"></div>
+      <div id="tacticalMisses" class="card hidden"></div>
+      <div id="positionalInsights" class="card hidden"></div>
+      <div id="endgameStrategy" class="card hidden"></div>
+      <div id="summary" class="card"></div>
+      <div class="chat-section">
+        <h3>💬 Ask the Coach</h3>
+        <div id="chatMessages" class="chat-messages"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Ask about the game...">
+          <button id="chatSend" class="btn primary">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="lib/llm.js"></script>
+  <script src="fullscreen.js"></script>
+</body>
+</html>
