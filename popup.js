@@ -63,6 +63,8 @@ async function loadSettings() {
   document.getElementById('provider').value = config.provider;
   document.getElementById('baseUrl').value = config.baseUrl || '';
   document.getElementById('model').value = config.model || '';
+  document.getElementById('visionModel').value = config.visionModel || '';
+  document.getElementById('textModel').value = config.textModel || '';
   document.getElementById('apiVersion').value = config.apiVersion || '';
   toggleProviderFields();
   checkApiWarning();
@@ -97,6 +99,8 @@ async function saveSettings() {
       provider: document.getElementById('provider').value,
       baseUrl: document.getElementById('baseUrl').value,
       model: document.getElementById('model').value,
+      visionModel: document.getElementById('visionModel').value,
+      textModel: document.getElementById('textModel').value,
       apiVersion: document.getElementById('apiVersion').value
     });
     document.getElementById('settingsPanel').classList.add('hidden');
