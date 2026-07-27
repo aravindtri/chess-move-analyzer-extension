@@ -51,6 +51,13 @@ async function loadSettings() {
   document.getElementById('model').value = config.model || '';
   document.getElementById('apiVersion').value = config.apiVersion || '';
   toggleProviderFields();
+  checkApiWarning();
+}
+
+function checkApiWarning() {
+  getApiKey().then(key => {
+    document.getElementById('noApiWarning').classList.toggle('hidden', !!key);
+  });
 }
 
 function toggleProviderFields() {
@@ -63,6 +70,10 @@ function toggleProviderFields() {
 
 function toggleSettings() {
   document.getElementById('settingsPanel').classList.toggle('hidden');
+}
+
+function showSettings() {
+  document.getElementById('settingsPanel').classList.remove('hidden');
 }
 
 async function saveSettings() {
