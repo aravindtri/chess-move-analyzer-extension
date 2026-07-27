@@ -42,6 +42,10 @@ Click ⚙ in the extension popup:
 | Provider | Base URL | Auth |
 |----------|----------|------|
 | **Gemini** | (built-in) | Query param `?key=` |
-| **DeepSeek** | `https://api.deepseek.com` | `Bearer` header |
+**DeepSeek setup:**
+- Provider: **OpenAI Compatible**
+- Base URL: `https://api.deepseek.com`
+- Model: `deepseek-chat`
+- API Key: Your DeepSeek API key from [platform.deepseek.com](https://platform.deepseek.com)
 | **Azure OpenAI** | `https://{resource}.openai.azure.com` | `api-key` header |
 | **OpenAI** | `https://api.openai.com` | `Bearer` header |

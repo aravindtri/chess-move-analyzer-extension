@@ -66,14 +66,19 @@ function toggleSettings() {
 }
 
 async function saveSettings() {
-  await saveApiKey(document.getElementById('apiKey').value);
-  await saveConfig({
-    provider: document.getElementById('provider').value,
-    baseUrl: document.getElementById('baseUrl').value,
-    model: document.getElementById('model').value,
-    apiVersion: document.getElementById('apiVersion').value
-  });
-  document.getElementById('settingsPanel').classList.add('hidden');
+  try {
+    await saveApiKey(document.getElementById('apiKey').value);
+    await saveConfig({
+      provider: document.getElementById('provider').value,
+      baseUrl: document.getElementById('baseUrl').value,
+      model: document.getElementById('model').value,
+      apiVersion: document.getElementById('apiVersion').value
+    });
+    document.getElementById('settingsPanel').classList.add('hidden');
+    checkApiWarning();
+  } catch (e) {
+    alert('Failed to save: ' + e.message);
+  }
 }
 
 // Image upload
