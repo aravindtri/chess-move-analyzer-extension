@@ -1,38 +1,27 @@
-// Fullscreen mode - loads saved analysis from popup
-document.addEventListener('DOMContentLoaded', async () => {
-  loadSettings();
+// Fullscreen mode - loads saved analysis after popup.js init
+window.addEventListener('load', async () => {
+  document.getElementById('inputPanel')?.classList.add('hidden');
+  document.getElementById('settingsPanel')?.classList.add('hidden');
 
   const data = await chrome.storage.local.get('fullscreenData');
-  if (!data.fullscreenData || !data.fullscreenData.analysis) {
-    document.getElementById('loadingMsg').textContent = 'No analysis found. Run analysis in the popup first.';
+  if (!data.fullscreenData?.analysis) {
+    document.getElementById('loadingMsg').textContent = 'No analysis. Run analysis in popup first.';
     return;
   }
 
-  const { analysis, chatHistory, plies: savedPlies, ply } = data.fullscreenData;
-  analysisResult = analysis;
-  chatHistory = chatHistory || [];
-  plies = savedPlies || [];
-  currentPly = ply || plies.length;
+  var d = data.fullscreenData;
+  analysisResult = d.analysis;
+  chatHistory = d.chatHistory || [];
+  plies = d.plies || [];
+  currentPly = d.ply || plies.length;
 
-  showResults(analysis);
+  showResults(analysisResult);
   document.getElementById('loadingMsg').classList.add('hidden');
-
-  // Wire up controls
-  document.getElementById('settingsBtn').addEventListener('click', toggleSettings);
-  document.getElementById('saveSettings').addEventListener('click', saveSettings);
-  document.getElementById('provider').addEventListener('change', toggleProviderFields);
-  document.getElementById('chatSend').addEventListener('click', sendChat);
-  document.getElementById('chatInput').addEventListener('keydown', e => { if (e.key === 'Enter') sendChat(); });
-  document.getElementById('btnFirst').addEventListener('click', () => setPly(0));
-  document.getElementById('btnPrev').addEventListener('click', () => setPly(currentPly - 1));
-  document.getElementById('btnNext').addEventListener('click', () => setPly(currentPly + 1));
-  document.getElementById('btnLast').addEventListener('click', () => setPly(plies.length));
-  document.getElementById('btnFlip').addEventListener('click', () => { isFlipped = !isFlipped; renderBoard(); });
+  document.getElementById('chatSend').onclick = sendChat;
+  document.getElementById('chatInput').onkeydown = e => { if (e.key === 'Enter') sendChat(); };
+  document.getElementById('btnFirst').onclick = () => setPly(0);
+  document.getElementById('btnPrev').onclick = () => setPly(currentPly - 1);
+  document.getElementById('btnNext').onclick = () => setPly(currentPly + 1);
+  document.getElementById('btnLast').onclick = () => setPly(plies.length);
+  document.getElementById('btnFlip').onclick = () => { isFlipped = !isFlipped; renderBoard(); };
 });
-
-// Override renderChat to save state for refresh
-const origRenderChat = renderChat;
-renderChat = function() {
-  origRenderChat();
-  chrome.storage.local.set({ fullscreenData: { analysis: analysisResult, chatHistory, plies, ply: currentPly } }).catch(() => {});
-};
