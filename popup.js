@@ -24,7 +24,7 @@ const INITIAL_BOARD = [
 
 // Initialize
 document.addEventListener('DOMContentLoaded', async () => {
-  loadSettings();
+  await loadSettings();
   document.getElementById('settingsBtn').addEventListener('click', toggleSettings);
   document.getElementById('fullscreenBtn').addEventListener('click', async () => {
     if (!analysisResult) return;
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       lastPlies: plies,
       lastPly: currentPly
     });
-    window.open(chrome.runtime.getURL('fullscreen.html'), '_blank');
+    chrome.tabs.create({ url: chrome.runtime.getURL('fullscreen.html') });
   });
   document.getElementById('saveSettings').addEventListener('click', saveSettings);
   document.getElementById('provider').addEventListener('change', toggleProviderFields);
