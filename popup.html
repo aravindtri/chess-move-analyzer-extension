@@ -86,6 +86,11 @@
         </select>
       </div>
       <button id="analyzeBtn" class="btn primary full">Analyze Moves</button>
+      <div id="editMovesSection" class="hidden" style="margin-top:8px">
+        <label style="font-size:11px;color:#888">Edit transcribed moves, then re-analyze:</label>
+        <textarea id="editMovesInput" rows="3" style="width:100%;margin:4px 0;background:#16213e;border:1px solid #333;border-radius:6px;color:#e0e0e0;font-family:monospace;font-size:12px;padding:6px"></textarea>
+        <button id="reanalyzeBtn" class="btn primary" style="width:100%">Re-Analyze Edited Moves</button>
+      </div>
       <div id="analyzeStatus" class="status hidden"></div>
     </div>
 

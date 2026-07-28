@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('uploadBtn').addEventListener('click', () => document.getElementById('imageUpload').click());
   document.getElementById('imageUpload').addEventListener('change', handleImageUpload);
   document.getElementById('analyzeBtn').addEventListener('click', analyzeMoves);
+  document.getElementById('reanalyzeBtn').addEventListener('click', reanalyzeMoves);
   document.getElementById('chatSend').addEventListener('click', sendChat);
   document.getElementById('chatInput').addEventListener('keydown', e => { if (e.key === 'Enter') sendChat(); });
   document.getElementById('openSettingsLink').addEventListener('click', e => { e.preventDefault(); showSettings(); });
@@ -157,6 +158,38 @@ async function analyzeMoves() {
       lastPly: currentPly
     });
 
+    showResults(result);
+    status.classList.add('hidden');
+
+    // Show edit button for image uploads
+    if (imageBase64) {
+      document.getElementById('editMovesSection').classList.remove('hidden');
+      const movesDisplay = (result.moves || []).map(m => `${m.moveNumber}. ${m.whiteMove} ${m.blackMove}`).join(' ');
+      document.getElementById('editMovesInput').value = movesDisplay;
+    }
+  } catch (e) {
+    status.textContent = 'Error: ' + e.message;
+    status.style.color = '#e74c3c';
+  }
+}
+
+async function reanalyzeMoves() {
+  const movesText = document.getElementById('editMovesInput').value.trim();
+  if (!movesText) return;
+  const status = document.getElementById('analyzeStatus');
+  status.classList.remove('hidden');
+  status.textContent = 'Re-analyzing...';
+  status.style.color = '#d4a574';
+  try {
+    const result = await chrome.runtime.sendMessage({
+      action: 'analyze',
+      data: { movesText, skillLevel: document.getElementById('skillLevel').value, imageBase64: null }
+    });
+    if (result.error) throw new Error(result.error);
+    analysisResult = result;
+    parsePlies(result.moves);
+    currentPly = plies.length;
+    chatHistory = [];
     showResults(result);
     status.classList.add('hidden');
   } catch (e) {
