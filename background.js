@@ -16,7 +16,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 async function handleAnalyze(data) {
   try {
-    const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out after 60s')), 60000));
+    const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out after 3min')), 180000));
     const result = await Promise.race([analyzeMoves(data.movesText, data.skillLevel, data.imageBase64), timeout]);
     return result;
   } catch (e) {
@@ -27,7 +27,7 @@ async function handleAnalyze(data) {
 
 async function handleChat(data) {
   try {
-    const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('Chat timed out after 30s')), 30000));
+    const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('Chat timed out after 2min')), 120000));
     const result = await Promise.race([chatAboutMoves(data.movesText, data.analysis, data.question, data.history), timeout]);
     return result;
   } catch (e) {
