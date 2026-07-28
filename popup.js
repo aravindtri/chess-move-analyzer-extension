@@ -63,7 +63,6 @@ async function loadSettings() {
   document.getElementById('apiKey').value = apiKey;
   document.getElementById('provider').value = config.provider;
   document.getElementById('baseUrl').value = config.baseUrl || '';
-  document.getElementById('model').value = config.model || '';
   document.getElementById('visionModel').value = config.visionModel || '';
   document.getElementById('textModel').value = config.textModel || '';
   document.getElementById('apiVersion').value = config.apiVersion || '';
@@ -107,7 +106,6 @@ async function saveSettings() {
     await saveConfig({
       provider: document.getElementById('provider').value,
       baseUrl: document.getElementById('baseUrl').value,
-      model: document.getElementById('model').value,
       visionModel: document.getElementById('visionModel').value,
       textModel: document.getElementById('textModel').value,
       apiVersion: document.getElementById('apiVersion').value,
