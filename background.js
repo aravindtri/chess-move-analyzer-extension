@@ -16,16 +16,22 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 async function handleAnalyze(data) {
   try {
-    return await analyzeMoves(data.movesText, data.skillLevel, data.imageBase64);
+    const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out after 60s')), 60000));
+    const result = await Promise.race([analyzeMoves(data.movesText, data.skillLevel, data.imageBase64), timeout]);
+    return result;
   } catch (e) {
+    console.error('Analyze error:', e);
     return { error: e.message };
   }
 }
 
 async function handleChat(data) {
   try {
-    return await chatAboutMoves(data.movesText, data.analysis, data.question, data.history);
+    const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('Chat timed out after 30s')), 30000));
+    const result = await Promise.race([chatAboutMoves(data.movesText, data.analysis, data.question, data.history), timeout]);
+    return result;
   } catch (e) {
+    console.error('Chat error:', e);
     return { error: e.message };
   }
 }
