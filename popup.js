@@ -27,9 +27,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadSettings();
   document.getElementById('settingsBtn').addEventListener('click', toggleSettings);
   document.getElementById('fullscreenBtn').addEventListener('click', () => {
-    document.body.classList.toggle('fullscreen');
-    const btn = document.getElementById('fullscreenBtn');
-    btn.textContent = document.body.classList.contains('fullscreen') ? '⛶ Shrink' : '⛶ Full';
+    if (!analysisResult) return;
+    chrome.storage.local.set({
+      lastAnalysis: analysisResult,
+      lastChatHistory: chatHistory,
+      lastPlies: plies,
+      lastPly: currentPly
+    });
+    chrome.windows.create({
+      url: chrome.runtime.getURL('fullscreen.html'),
+      type: 'popup',
+      width: 820,
+      height: 900
+    });
   });
   document.getElementById('saveSettings').addEventListener('click', saveSettings);
   document.getElementById('provider').addEventListener('change', toggleProviderFields);
