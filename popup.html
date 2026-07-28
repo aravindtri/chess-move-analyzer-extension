@@ -15,7 +15,7 @@
     <div class="header">
       <h1>♟ Chess Move Analyzer</h1>
       <div class="header-btns">
-        <button id="fullscreenBtn" class="icon-btn" title="Open Fullscreen" onclick="if(!analysisResult)return;chrome.storage.local.set({lastAnalysis:analysisResult,lastChatHistory:chatHistory,lastPlies:plies,lastPly:currentPly});window.open(chrome.runtime.getURL('fullscreen.html'),'_blank')">⛶ Full</button>
+        <button id="fullscreenBtn" class="icon-btn" title="Open Fullscreen" onclick="if(!analysisResult)return;chrome.storage.local.set({lastAnalysis:analysisResult,lastChatHistory:chatHistory,lastPlies:plies,lastPly:currentPly});chrome.tabs.create({url:chrome.runtime.getURL('fullscreen.html')})">⛶ Full</button>
         <button id="settingsBtn" class="icon-btn" title="API Settings">⚙ Keys</button>
       </div>
     </div>
