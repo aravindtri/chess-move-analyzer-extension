@@ -26,21 +26,6 @@ const INITIAL_BOARD = [
 document.addEventListener('DOMContentLoaded', async () => {
   await loadSettings();
   document.getElementById('settingsBtn').addEventListener('click', toggleSettings);
-  document.getElementById('fullscreenBtn').addEventListener('click', () => {
-    if (!analysisResult) return;
-    chrome.storage.local.set({
-      lastAnalysis: analysisResult,
-      lastChatHistory: chatHistory,
-      lastPlies: plies,
-      lastPly: currentPly
-    });
-    chrome.windows.create({
-      url: chrome.runtime.getURL('fullscreen.html'),
-      type: 'popup',
-      width: 820,
-      height: 900
-    });
-  });
   document.getElementById('saveSettings').addEventListener('click', saveSettings);
   document.getElementById('provider').addEventListener('change', toggleProviderFields);
   document.getElementById('visionProvider').addEventListener('change', toggleVisionFields);
@@ -119,6 +104,19 @@ async function saveSettings() {
   } catch (e) {
     alert('Failed to save: ' + e.message);
   }
+}
+
+// Fullscreen - inline onclick to beat popup closure
+function openFullscreen() {
+  if (!analysisResult) return;
+  chrome.storage.local.set({
+    lastAnalysis: analysisResult, lastChatHistory: chatHistory,
+    lastPlies: plies, lastPly: currentPly
+  });
+  chrome.windows.create({
+    url: chrome.runtime.getURL('fullscreen.html'),
+    type: 'popup', width: 820, height: 900
+  });
 }
 
 // Image upload
