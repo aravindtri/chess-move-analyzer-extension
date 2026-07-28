@@ -159,10 +159,15 @@ async function analyzeMoves() {
     const link = document.getElementById('fullscreenLink');
     link.style.display = 'inline-block';
     link.href = chrome.runtime.getURL('fullscreen.html');
-    link.onclick = () => chrome.storage.local.set({
-      lastAnalysis: analysisResult, lastChatHistory: chatHistory,
-      lastPlies: plies, lastPly: currentPly
-    });
+    link.onclick = (e) => {
+      e.preventDefault();
+      chrome.storage.local.set({
+        lastAnalysis: analysisResult, lastChatHistory: chatHistory,
+        lastPlies: plies, lastPly: currentPly
+      }, () => {
+        window.open(chrome.runtime.getURL('fullscreen.html'), '_blank');
+      });
+    };
 
     // Show edit button for image uploads
     if (imageBase64) {
