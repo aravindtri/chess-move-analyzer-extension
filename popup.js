@@ -106,19 +106,6 @@ async function saveSettings() {
   }
 }
 
-// Fullscreen - inline onclick to beat popup closure
-function openFullscreen() {
-  if (!analysisResult) return;
-  chrome.storage.local.set({
-    lastAnalysis: analysisResult, lastChatHistory: chatHistory,
-    lastPlies: plies, lastPly: currentPly
-  });
-  chrome.windows.create({
-    url: chrome.runtime.getURL('fullscreen.html'),
-    type: 'popup', width: 820, height: 900
-  });
-}
-
 // Image upload
 let imageBase64 = null;
 function handleImageUpload(e) {
