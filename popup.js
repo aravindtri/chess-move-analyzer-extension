@@ -156,6 +156,14 @@ async function analyzeMoves() {
     showResults(result);
     status.classList.add('hidden');
 
+    const link = document.getElementById('fullscreenLink');
+    link.style.display = 'inline-block';
+    link.href = chrome.runtime.getURL('fullscreen.html');
+    link.onclick = () => chrome.storage.local.set({
+      lastAnalysis: analysisResult, lastChatHistory: chatHistory,
+      lastPlies: plies, lastPly: currentPly
+    });
+
     // Show edit button for image uploads
     if (imageBase64) {
       document.getElementById('editMovesSection').classList.remove('hidden');
