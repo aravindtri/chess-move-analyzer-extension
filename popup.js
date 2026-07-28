@@ -27,16 +27,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadSettings();
   document.getElementById('settingsBtn').addEventListener('click', toggleSettings);
   document.getElementById('fullscreenBtn').addEventListener('click', () => {
-    if (!analysisResult) return;
-    // Save synchronously via callback before popup closes
-    chrome.storage.local.set({
-      lastAnalysis: analysisResult,
-      lastChatHistory: chatHistory,
-      lastPlies: plies,
-      lastPly: currentPly
-    }, () => {
-      window.open(chrome.runtime.getURL('fullscreen.html'), '_blank');
-    });
+    document.body.classList.toggle('fullscreen');
+    const btn = document.getElementById('fullscreenBtn');
+    btn.textContent = document.body.classList.contains('fullscreen') ? '⛶ Shrink' : '⛶ Full';
   });
   document.getElementById('saveSettings').addEventListener('click', saveSettings);
   document.getElementById('provider').addEventListener('change', toggleProviderFields);
