@@ -26,19 +26,15 @@ const INITIAL_BOARD = [
 document.addEventListener('DOMContentLoaded', async () => {
   loadSettings();
   document.getElementById('settingsBtn').addEventListener('click', toggleSettings);
-  document.getElementById('fullscreenBtn').addEventListener('click', () => {
-    chrome.storage.local.get(['lastAnalysis', 'lastChatHistory', 'lastPlies', 'lastPly'], (data) => {
-      chrome.storage.local.set({
-        fullscreenData: {
-          analysis: data.lastAnalysis,
-          chatHistory: data.lastChatHistory,
-          plies: data.lastPlies,
-          ply: data.lastPly
-        }
-      }, () => {
-        chrome.tabs.create({ url: chrome.runtime.getURL('fullscreen.html') });
-      });
+  document.getElementById('fullscreenBtn').addEventListener('click', async () => {
+    if (!analysisResult) return;
+    await chrome.storage.local.set({
+      lastAnalysis: analysisResult,
+      lastChatHistory: chatHistory,
+      lastPlies: plies,
+      lastPly: currentPly
     });
+    chrome.tabs.create({ url: chrome.runtime.getURL('fullscreen.html') });
   });
   document.getElementById('saveSettings').addEventListener('click', saveSettings);
   document.getElementById('provider').addEventListener('change', toggleProviderFields);

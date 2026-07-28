@@ -1,19 +1,23 @@
-// Fullscreen mode - loads saved analysis after popup.js init
-window.addEventListener('load', async () => {
-  document.getElementById('inputPanel')?.classList.add('hidden');
-  document.getElementById('settingsPanel')?.classList.add('hidden');
+// Fullscreen mode - hide panels immediately, then load saved analysis
+(function() {
+  // Run synchronously before popup.js DOMContentLoaded fires
+  var inputPanel = document.getElementById('inputPanel');
+  var settingsPanel = document.getElementById('settingsPanel');
+  if (inputPanel) inputPanel.style.display = 'none';
+  if (settingsPanel) settingsPanel.style.display = 'none';
+})();
 
-  const data = await chrome.storage.local.get('fullscreenData');
-  if (!data.fullscreenData?.analysis) {
+window.addEventListener('load', async () => {
+  const data = await chrome.storage.local.get(['lastAnalysis', 'lastChatHistory', 'lastPlies', 'lastPly']);
+  if (!data.lastAnalysis) {
     document.getElementById('loadingMsg').textContent = 'No analysis. Run analysis in popup first.';
     return;
   }
 
-  var d = data.fullscreenData;
-  analysisResult = d.analysis;
-  chatHistory = d.chatHistory || [];
-  plies = d.plies || [];
-  currentPly = d.ply || plies.length;
+  analysisResult = data.lastAnalysis;
+  chatHistory = data.lastChatHistory || [];
+  plies = data.lastPlies || [];
+  currentPly = data.lastPly || plies.length;
 
   showResults(analysisResult);
   document.getElementById('loadingMsg').classList.add('hidden');
