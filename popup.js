@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       lastPlies: plies,
       lastPly: currentPly
     });
-    chrome.tabs.create({ url: chrome.runtime.getURL('fullscreen.html') });
+    window.open(chrome.runtime.getURL('fullscreen.html'), '_blank');
   });
   document.getElementById('saveSettings').addEventListener('click', saveSettings);
   document.getElementById('provider').addEventListener('change', toggleProviderFields);
