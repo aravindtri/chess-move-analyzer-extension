@@ -8,8 +8,15 @@
 })();
 
 window.addEventListener('load', async () => {
-  const data = await chrome.storage.local.get(['lastAnalysis', 'lastChatHistory', 'lastPlies', 'lastPly']);
-  if (!data.lastAnalysis) {
+  // Poll for data (popup might still be saving when we load)
+  let data;
+  for (let i = 0; i < 10; i++) {
+    data = await chrome.storage.local.get(['lastAnalysis', 'lastChatHistory', 'lastPlies', 'lastPly']);
+    if (data.lastAnalysis) break;
+    await new Promise(r => setTimeout(r, 300));
+  }
+
+  if (!data || !data.lastAnalysis) {
     document.getElementById('loadingMsg').textContent = 'No analysis. Run analysis in popup first.';
     return;
   }

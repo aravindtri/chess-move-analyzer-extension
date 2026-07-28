@@ -26,15 +26,17 @@ const INITIAL_BOARD = [
 document.addEventListener('DOMContentLoaded', async () => {
   await loadSettings();
   document.getElementById('settingsBtn').addEventListener('click', toggleSettings);
-  document.getElementById('fullscreenBtn').addEventListener('click', async () => {
+  document.getElementById('fullscreenBtn').addEventListener('click', () => {
     if (!analysisResult) return;
-    await chrome.storage.local.set({
+    // Save synchronously via callback before popup closes
+    chrome.storage.local.set({
       lastAnalysis: analysisResult,
       lastChatHistory: chatHistory,
       lastPlies: plies,
       lastPly: currentPly
+    }, () => {
+      window.open(chrome.runtime.getURL('fullscreen.html'), '_blank');
     });
-    chrome.tabs.create({ url: chrome.runtime.getURL('fullscreen.html') });
   });
   document.getElementById('saveSettings').addEventListener('click', saveSettings);
   document.getElementById('provider').addEventListener('change', toggleProviderFields);
