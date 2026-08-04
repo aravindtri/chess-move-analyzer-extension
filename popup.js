@@ -68,10 +68,26 @@ function checkApiWarning() {
 
 function toggleProviderFields() {
   const provider = document.getElementById('provider').value;
-  const showOpenAi = provider === 'openai_compatible' || provider === 'azure_openai';
+  const showOpenAi = provider.startsWith('openai_') || provider === 'azure_openai';
   const showAzure = provider === 'azure_openai';
   document.querySelector('.openai-field').classList.toggle('hidden', !showOpenAi);
   document.querySelector('.azure-field').classList.toggle('hidden', !showAzure);
+
+  // Auto-fill presets
+  const presets = {
+    openai_deepseek: { baseUrl: 'https://api.deepseek.com', textModel: 'deepseek-chat' },
+    openai_kimi:     { baseUrl: 'https://api.moonshot.ai', textModel: 'kimi-k2-turbo' },
+    openai_openai:   { baseUrl: 'https://api.openai.com', textModel: 'gpt-4o', visionModel: 'gpt-4o' }
+  };
+  const preset = presets[provider];
+  if (preset) {
+    const baseEl = document.getElementById('baseUrl');
+    if (preset.baseUrl && !baseEl.value) baseEl.value = preset.baseUrl;
+    const textEl = document.getElementById('textModel');
+    if (preset.textModel && !textEl.value) textEl.value = preset.textModel;
+    const visEl = document.getElementById('visionModel');
+    if (preset.visionModel && !visEl.value) visEl.value = preset.visionModel;
+  }
 }
 
 function toggleVisionFields() {
@@ -91,7 +107,8 @@ async function saveSettings() {
   try {
     await saveApiKey(document.getElementById('apiKey').value);
     await saveConfig({
-      provider: document.getElementById('provider').value,
+      provider: document.getElementById('provider').value.startsWith('openai_') ? 'openai_compatible' : document.getElementById('provider').value,
+      _preset: document.getElementById('provider').value,
       baseUrl: document.getElementById('baseUrl').value,
       visionModel: document.getElementById('visionModel').value,
       textModel: document.getElementById('textModel').value,

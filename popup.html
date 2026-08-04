@@ -30,7 +30,12 @@
         <label>Provider</label>
         <select id="provider">
           <option value="gemini">Gemini</option>
-          <option value="openai_compatible">OpenAI Compatible</option>
+          <optgroup label="OpenAI Compatible">
+            <option value="openai_compatible">Custom</option>
+            <option value="openai_deepseek">DeepSeek</option>
+            <option value="openai_kimi">Kimi (Moonshot)</option>
+            <option value="openai_openai">OpenAI</option>
+          </optgroup>
           <option value="azure_openai">Azure OpenAI</option>
         </select>
       </div>
